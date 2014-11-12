@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Formulario rest</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <script src="js/d3.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-resource.js"></script>
+    <script src="js/angular-locale_es-mx.js"></script>
+
+
+
+</head>
+<body>
+<!--Encabezado -->
+<div class="nav navbar navbar-inverse">
+    <a class="navbar-brand  text-center">Aplicación REST productos</a>
+</div>
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#inicio" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+    <li><a href="#insertar-producto" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-ok"></span> Guardar Producto</a></li>
+    <li><a href="#buscar-todos-productos" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list"></span> Todos los productos</a></li>
+    <li><a href="#buscar-por-id-producto" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-search"></span> Buscar un producto</a></li>
+    <li><a href="#actualizar-producto" rol="tab" data-toggle="tab"><span class="glyphicon glyphicon-check"></span> Actualizar un producto</a></li>
+    <li><a href="#borrar-producto" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-remove"></span> Borra Producto</a></li>
+</ul>
+<!--Enlac de paneles -->
+    <div class="tab-content">
+        <!--Primer tab -->
+        <div class="tab-pane active" id="inicio">
+            <div class="panel panel-default">
+                <div class="panel-heading">Inicio</div>
+            </div>
+        </div>
+        <!-- tab de insertar producto -->
+         <div class="tab-pane" id="insertar-producto">
+             <div class="panel panel-default">
+                 <div class="panel-heading">Guardar un producto</div>
+
+                 <div class="panel-title"><h3>Introduce la informacion requerida</h3></div>
+
+                 <div class="panel-body">
+                     <div class="form-group">
+                         <input class="form-control" ng-model="newProducto.nombre" placeholder="Nombre del producto">
+                     </div>
+
+                     <div class="controls form-inline">
+
+                         <input class="form-control">
+                     <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                     </div>
+
+                 </div>
+             </div>
+         </div>
+    </div>
+</body>
+</html>

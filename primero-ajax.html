@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app="exampleAp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Primero con ajax</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-resource.js"></script>
+    <script src="js/angular-locale_es-mx.js"></script>
+    <script>
+        angular.module("exampleAp",["ngResource"])
+                .constant("baseUrl","http://localhost:8091/jelastic_campitos/servicios/producto/")
+                .controller("primerCtril", function($scope, $http,$resource,baseUrl){
+                    $scope.currentProduct=null;
+                    $scope.product=null;
+                    $scope.displayMode="list";
+                    $scope.prductsResource2=$resource(baseUrl);
+                            $scope.prductsResource=$resource(baseUrl+ ":id",{id:"@id"},
+                { create: { method: "POST" }, save: { method: "PUT" }});
+
+                    $scope.products=[];
+
+
+                    $scope.updateProduct=function(product){
+                         new $scope.prductsResource(product).$save().then(function(newProduct){
+                            console.log("se ha actualziado esta mamada");
+                        });
+
+
+                    }
+
+                    /*
+                    buscar todos
+                     */
+                  $scope.listProducts=function(){
+                      console.log("se activara?");
+                $scope.products=$scope.prductsResource.query();
+
+                      console.log("no se actruivo:");
+                         };
+
+                     /*
+                     Insertar producto
+                      */
+                    $scope.createProduct=function(product){
+                        new $scope.prductsResource2(product).$save().then(function(newProduct){
+                        console.log("se ha guardado este productito");
+                        });
+                    }
+                    /*
+                    Actualizar producto
+                     */
+
+                });
+    </script>
+</head>
+<body ng-controller="primerCtril">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr><th>nombre</th><th>Edad</th><th>id generador</th></tr>
+            </thead>
+            <tbody>
+            <tr ng-hide="usuarios.length">
+                <td colspan="3" class="text-center">sin datos</td>
+            </tr>
+            <tr ng-repeat="item in products">
+                <td>{{item.id}}</td>
+            <td>{{item.nombre}}</td>
+                <td>{{item.dscripcion}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <p><button class="btn btn-primary" ng-click="listProducts()">Cargar datos</button> </p>
+
+      <div class="form-group">
+        <input class="form-control"
+             placeholder="nombre" ng-model="currentProduct.nombre" />
+          </div>
+        <div class="form-group">
+      <input class="form-control"
+              placeholder="descripcion" ng-model="currentProduct.dscripcion">
+            </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="categoria" ng-model="currentProduct.categoria">
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="precio" ng-model="currentProduct.precio">
+        </div>
+        <div class="form-group">
+      <button class="btn btn-primary" ng-click="createProduct(currentProduct)">Guardar</button>
+            </div>
+
+        <h3>Actualizamos un producto</h3>
+        <div class="form-group">
+            <input class="form-control" placeholder="id" ng-model="product.id">
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="nombre" ng-model="product.nombre">
+        </div>
+        <div class="form-group">
+            <input class="form-control"
+                   placeholder="descripcion" ng-model="product.dscripcion">
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="categoria" ng-model="product.categoria">
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="precio" ng-model="product.precio">
+        </div>
+        <div class="form-group">
+        <button class="btn btn-success" ng-click="updateProduct(product)">
+            Actualizar producto
+        </button>
+       </div>
+    </div>
+</div>
+</body>
+</html>

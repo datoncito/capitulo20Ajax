@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>REST TEST</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/angular-resource.js"></script>
+    <script src="js/angular-locale_es-mx.js"></script>
+    <script>
+        angular.module("exampleApp",["ngResource"])
+                .controller("exampleCtrl",function($scope, $http, $resource){
+                $scope.conectarse=function(){
+                    /*
+                    var Producto=$resource('http://localhost:8091/jelastic_campitos/servicios/producto');
+                    var valores=Producto.query(function(){
+                       var tama=valores.length;
+
+                        var newProducto= new Producto({id:'5457eabd44aed4cf697387c2'});
+                        newProducto.nombre="perro";
+                        newProducto.dscripcion="gato";
+                        newProducto.categoria="caca";
+                        newProducto.precio=12;
+                        newProducto.$save();
+
+                        console.log("bien hasta aqui:"+tama);
+
+                    });
+                                    */
+                    var Producto2=$resource('http://localhost:8091/jelastic_campitos/servicios/producto/:id', {id:'@id'},
+                            { creadito: { method: "POST" }, salvate: { method: "PUT" }});
+
+                    //Hacemos un query
+                    var valores=Producto2.query(function(){
+                        var tama=valores.length;
+                        console.log("tamano:"+tama);
+                    });
+
+                    /*
+                    Ahora vamos a realizar un get por id
+                    */
+                     var productito=Producto2.get({id:'5457eb0144aed4cf697387c3'
+
+                     }, function(){
+                         console.log("producto a obtener:"+productito.nombre);
+                     });
+
+
+                    //Primero usamos el update personalziado
+                    var otro=new Producto2();
+                    otro.id='5457eabd44aed4cf697387c2';
+                    otro.$salvate();
+
+                    //trataremos de hacer el delete
+                    /*  En el DELETE HAY ALGO MUY CURIOSO, ES TRATADO COMO TEXT/HTML POR ESO N SE TE OCURRA PONERLO EN SPRING
+                    COMO RECEPCION DE APPLICATION/JSON, Y ES HASTA CIERTO PUNTO OBVIO PARA BORRA SOLO NECESITAS EL ID
+                    YA QUE NO SE REQUIERE NADA ADICIONAL CIERTO????
+                    */
+                    var mas=new Producto2();
+                   mas.id='5459e5ac44ae82b37484f8cf';
+
+                    mas.$delete();
+
+                    //Ahora usamos el insert personalizado(post) //Si funciona pero lo coemnto porque ya inserte muchos
+                    /*
+                     var mas=new Producto2();
+                    mas.nombre="perro";
+                    mas.dscripcion="gato";
+                    mas.categoria="caca";
+                    mas.precio=12;
+                    mas.$creadito();
+                     */
+
+                    console.log("ya andas conectadote perrito malo");
+                }
+                });
+    </script>
+</head>
+<body ng-controller="exampleCtrl">
+<button class="btn btn-success" ng-click="conectarse()" >Conectarse</button>
+
+</body>
+</html>

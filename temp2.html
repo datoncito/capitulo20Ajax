@@ -5,69 +5,134 @@
     <title>Grafrica de temperatura</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/angular.js"></script>
     <script src="js/angular-resource.js"></script>
     <script src="js/angular-locale_es-mx.js"></script>
     <script type="text/javascript" src="js/d3.js"></script>
-    <style>
 
-        .chart div {
-            font: 10px sans-serif;
-            background-color: steelblue;
-            text-align: right;
-            padding: 3px;
-            margin: 1px;
-            color: white;
-        }
-
-    </style>
-    <div class="chart"></div>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script>
 
-        /* Primero cargamos los datos de campitos-ley */
-        angular.module("exampleApp",["ngResource"])
-                .controller("ctrlExample",function($scope, $http,$resource){
-                    $scope.temperaturas=[];
-                    //  $scope.conectarse=function(){
-                    var Temperatura=$resource('http://campitos-ley.whelastic.net/uv/servicios/estacion/temperatura',{id:'@id'},
-                            { creadito: { method: "POST" }, salvate: { method: "PUT" }});
-                    var valores=Temperatura.query(function(){
-                        console.log("tamano:"+valores.length);
-
-                        //GRAFICA ENCAPSULADA
-                        var data = [];
-                        for(i=0;i<valores.length;i++){
-                            var hora=Date();
-                            console.log(valores[i].hora+"hora:"+hora);
-                            data[i]=valores[i].temperatura;
-                        }
-
-                        var x = d3.scale.linear()
-                                .domain([0, d3.max(data)])
-                                .range([0, 420]);
-
-                        d3.select(".chart")
-                                .selectAll("div")
-                                .data(data)
-                                .enter().append("div")
-                                .style("width", function(d) { return x(d) + "px"; })
-                                .text(function(d) { return d; });
-                        /*  Termina primer grafica*/
-
-                    });
-                    // }
-                });
-
-
-
-    </script>
 
 </head>
 <body ng-controller="ctrlExample">
 <!--<button class="btn btn-primary" ng-click="conectarse()">Conectarse</button>-->
-<h2>Temperatura de las últimas 24 horas, estacion Grupo Ambientalista Sierra de Guadalupe A.C.</h2>
+<h2>La Temperatura a las : {{horita}}, es de {{horitatemper}} °C,  estacion Grupo Ambientalista Sierra de Guadalupe A.C.</h2>
+<script>
+
+    /* Primero cargamos los datos de campitos-ley */
+    angular.module("exampleApp",["ngResource"])
+            .controller("ctrlExample",function($scope, $http,$resource){
+                $scope.temperaturas=[];
+                $scope.horitatemper=null;
+                $scope.horita=null;
+
+                var Temperatura=$resource('http://campitos-ley.whelastic.net/uv/servicios/estacion/temperatura',{id:'@id'},
+                        { creadito: { method: "POST" }, salvate: { method: "PUT" }});
+                var valores=Temperatura.query(function() {
+                    console.log("tamano:" + valores.length);
+
+                    //GRAFICA ENCAPSULADA
+                    /*
+                    var data = [{year: 2006, books: 54},
+                        {year: 2007, books: 43},
+                        {year: 2008, books: 41},
+                        {year: 2009, books: 44},
+                        {year: 2010, books: 35}];
+                        */
+                    var data=valores;
+
+                    var barWidth = 40;
+                    var width = (barWidth + 10) * data.length;
+                    var height = 200;
+
+                    var x = d3.scale.linear().domain([0, data.length]).range([0, width]);
+                    var y = d3.scale.linear().domain([0, d3.max(data, function(datum) { return datum.temperatura; })]).
+                            rangeRound([0, height]);
+
+// add the canvas to the DOM
+                    var barDemo = d3.select(".bar-demo").
+                            append("svg:svg").
+                            attr("width", width).
+                            attr("height", height);
+
+                    barDemo.selectAll("rect").
+                            data(data).
+                            enter().
+                            append("svg:rect").
+                            attr("x", function(datum, index) { return x(index); }).
+                            attr("y", function(datum) { return height - y(datum.temperatura); }).
+                            attr("height", function(datum) { return y(datum.temperatura); }).
+                            attr("width", barWidth).
+                            attr("fill", "#2d578b");
+
+                    barDemo.selectAll(".text").
+                            data(data).
+                            enter().
+                            append("svg:text").
+                            attr("x", function(datum, index) { return x(index) + barWidth; }).
+                            attr("y", function(datum) { return height - y(datum.temperatura); }).
+                            attr("dx", -barWidth/2).
+                            attr("dy", "1.2em").
+                            attr("text-anchor", "middle").
+                            text(function(datum) { return datum.temperatura;}).
+                            attr("fill", "white");
+
+                    barDemo.selectAll(".text").
+                            data(data).
+                            enter().
+                            append("svg:text").
+                            attr("x", function(datum, index) { return x(index) + barWidth-10; }).
+                            attr("y", function(datum) { return 0+180; }).
+                            attr("dx", -barWidth/2).
+                            attr("dy", "1.2em").
+                            attr("text2-anchor", "middle").
+                            text(function(datum) { return datum.hora+"";}).
+                            attr("fill", "black");
+
+
+
+
+
+
+
+
+
+                    /* TERMINA LA GRAFICA*/
+
+                    /* Inicialziamos los valores y el actual*/
+
+                    for (i = 0; i < valores.length; i++) {
+                        var d = new Date();
+                        var horas = d.getHours();
+                        var minutos = d.getMinutes();
+                        if (valores[i].hora === horas) {
+                            $scope.horitatemper = valores[i].temperatura;
+                            $scope.horita = horas + ":" + minutos;
+                            console.log($scope.horitatemper + " a la hora " + $scope.horita);
+                        }
+                        // console.log(valores[i].hora+"hora:"+n);
+                        data[i] = valores[i].temperatura;
+                    }
+
+
+
+
+
+
+                    /* termina el for de inicialziaciones */
+
+                   });/* cierre de la funcion del query json datos */
+                });
+
+
+
+
+
+</script>
+<div class="bar-demo"></div>
+
 </body>
 </html>

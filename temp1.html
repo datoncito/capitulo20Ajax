@@ -25,49 +25,60 @@
     </style>
     <div class="chart"></div>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script>
 
-        /* Primero cargamos los datos de campitos-ley */
-        angular.module("exampleApp",["ngResource"])
-                .controller("ctrlExample",function($scope, $http,$resource){
-                    $scope.temperaturas=[];
-           //  $scope.conectarse=function(){
-                        var Temperatura=$resource('http://campitos-ley.whelastic.net/uv/servicios/estacion/temperatura',{id:'@id'},
-                                { creadito: { method: "POST" }, salvate: { method: "PUT" }});
-                        var valores=Temperatura.query(function(){
-                            console.log("tamano:"+valores.length);
-
-                         //GRAFICA ENCAPSULADA
-                            var data = [];
-                           for(i=0;i<valores.length;i++){
-                               var hora=Date();
-                               console.log(valores[i].hora+"hora:"+hora);
-                               data[i]=valores[i].temperatura;
-                           }
-
-                            var x = d3.scale.linear()
-                                    .domain([0, d3.max(data)])
-                                    .range([0, 420]);
-
-                            d3.select(".chart")
-                                    .selectAll("div")
-                                    .data(data)
-                                    .enter().append("div")
-                                    .style("width", function(d) { return x(d) + "px"; })
-                                    .text(function(d) { return d; });
-                            /*  Termina primer grafica*/
-
-                        });
-                   // }
-             });
-
-
-
-    </script>
 
 </head>
 <body ng-controller="ctrlExample">
 <!--<button class="btn btn-primary" ng-click="conectarse()">Conectarse</button>-->
-<h2>Temperatura de las últimas 24 horas, estacion Grupo Ambientalista Sierra de Guadalupe A.C.</h2>
+<h2>Temperatura a las : {{horita}}, es de {{horitatemper}},  estacion Grupo Ambientalista Sierra de Guadalupe A.C.</h2>
+<script>
+
+    /* Primero cargamos los datos de campitos-ley */
+    angular.module("exampleApp",["ngResource"])
+            .controller("ctrlExample",function($scope, $http,$resource){
+                $scope.temperaturas=[];
+                $scope.horitatemper=null;
+                $scope.horita=null;
+                //  $scope.conectarse=function(){
+                var Temperatura=$resource('http://campitos-ley.whelastic.net/uv/servicios/estacion/temperatura',{id:'@id'},
+                        { creadito: { method: "POST" }, salvate: { method: "PUT" }});
+                var valores=Temperatura.query(function(){
+                    console.log("tamano:"+valores.length);
+
+                    //GRAFICA ENCAPSULADA
+                    var data = [];
+                    for(i=0;i<valores.length;i++){
+                        var d = new Date();
+                        var horas = d.getHours();
+                        var minutos= d.getMinutes();
+                        if(valores[i].hora===horas){
+                            $scope.horitatemper=valores[i].temperatura;
+                            $scope.horita=horas+":"+minutos;
+                            console.log($scope.horitatemper+" a la hora "+$scope.horita);
+                        }
+                        // console.log(valores[i].hora+"hora:"+n);
+                        data[i]=valores[i].temperatura;
+                    }
+
+                    var x = d3.scale.linear()
+                            .domain([0, d3.max(data)])
+                            .range([0, 420]);
+
+                    d3.select(".chart")
+                            .selectAll("div")
+                            .data(data)
+                            .enter().append("div")
+                            .style("width", function(d) { return x(d) + "px"; })
+                            .text(function(d) { return d; });
+                    /*  Termina primer grafica*/
+
+                });
+                // }
+            });
+
+
+
+</script>
+
 </body>
 </html>

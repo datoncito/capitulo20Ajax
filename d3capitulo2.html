@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dc.css">
+    <script src="js/d3.js"></script>
+    <title>capitulo2</title>
+
+</head>
+<body>
+<div></div>
+<div></div>
+<div></div>
+<script>
+d3.selectAll("div")
+        .attr("class","red box")
+        .each(function(d,i){
+    d3.select(this).append("h1").text(i);
+})
+</script>
+</body>
+</html>

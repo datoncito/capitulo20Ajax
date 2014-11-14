@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dc.css">
+    <script src="js/d3.js"></script>
+    <title>capitulo2 2</title>
+
+</head>
+<body>
+
+<script>
+var body=d3.select("body");
+    body.append("section")
+            .attr("id", "section1")
+            .append("div")
+            .attr("class","blue box")
+            .append("p")
+            .text("dynamic blue box");
+    body.append("section")
+            .attr("id", "section2")
+            .append("div")
+            .attr("class", "red box")
+            .append("p")
+            .text("dynamic red box");
+</script>
+</body>
+</html>

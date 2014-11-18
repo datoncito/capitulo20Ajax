@@ -218,3 +218,9 @@ button {
     stroke: none;
     fill: steelblue;
 }
+.contenedor{
+
+    width:600px;
+    height:500px;
+    margin:0 auto;
+}

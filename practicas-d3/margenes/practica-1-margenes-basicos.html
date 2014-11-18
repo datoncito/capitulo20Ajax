@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/bootstrap-theme.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="../../js/bootstrap.js"></script>
+    <script src="../../js/angular.js"></script>
+    <script src="../../js/angular-resource.js"></script>
+    <script src="../../js/angular-locale_es-mx.js"></script>
+    <script type="text/javascript" src="../../js/d3.js"></script>
+    <title>Practica basica de margenes</title>
+</head>
+<body>
+<script>
+    //definimos los margenes
+    var margen={top:40,left:40,right:40,bottom:40},
+        anchoTotal=700,
+        altoTotal=400,
+       ancho=anchoTotal-magen.left-margen.right,
+       alto=altoTotal-margen.top-margen.bottom;
+    //definimos la escala
+    var x=d3.scale.linear()
+            .domain([0,ancho]);
+    var y=d3.scale.linear()
+            .domain([0,alto]);
+
+    //definimos los ejes
+     var  ejeX= d3.svg.axis()
+             .scale(x)
+             .orient("bottom");
+    var ejeY=d3.svg.axis()
+            .scale(y)
+            .orient("left");
+
+    // El siguiente paso es mover el eje de coordenadas al lugar deseado
+
+</script>
+</body>
+</html>

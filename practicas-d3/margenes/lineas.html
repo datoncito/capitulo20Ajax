@@ -26,26 +26,29 @@
                     .domain([0,10])
                     .range([height-margin,margin]);
 
-    var data = [ // <-C
-        [
-            {x: 0, y: 5},{x: 1, y: 9},{x: 2, y: 7},
-            {x: 3, y: 5},{x: 4, y: 3},{x: 6, y: 4},
-            {x: 7, y: 2},{x: 8, y: 3},{x: 9, y: 2}
+    var data = [ // <-C aqui sustitui a lña "x de los datos por m,
+        [         // para que veas que no hay pedo en el
+            {m: 0, y: 5},{m: 1, y: 9},{m: 2, y: 7},
+            {m: 3, y: 5},{m: 4, y: 3},{m: 6, y: 4},
+            {m: 7, y: 2},{m: 8, y: 3},{m: 9, y: 2}
         ],
 
         d3.range(10).map(function(i){
-            return {x: i, y: Math.sin(i) + 5};
+            return {m: i, y: Math.sin(i) + 5};
         })
     ];
 
     var line=d3.svg.line()
-            .x(function(d){return x(d.x);})
+            .x(function(d){return x(d.m);})
             .y(function(d){return y(d.y);});
-
+// El select body es para que agarre el cuerpo de svg y pinte tanto la linea
+    //como los ejes!
     var svg=d3.select("body").append("svg");
     svg.attr("height",height)
             .attr("width",width);
-
+/*
+El path es para que pinte la linea con la union dada en var line;
+ */
     svg.selectAll("path")
             .data(data)
             .enter()

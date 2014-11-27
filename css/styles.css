@@ -165,8 +165,11 @@ button {
 
 .area {
     stroke: none;
-    fill: steelblue;
+    fill: #398439;
     fill-opacity: .2;
+}
+.colorcin{
+    background-color: #398439;
 }
 
 .pie text{
@@ -223,4 +226,10 @@ button {
     width:600px;
     height:500px;
     margin:0 auto;
+}
+
+.grafica-temp-linea{
+    margin:0 auto;
+    width:800px;
+    height:600px;
 }

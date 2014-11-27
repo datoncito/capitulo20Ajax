@@ -24,14 +24,14 @@
                     .domain([0, 10])
                     .range([margin, width - margin]),
             y = d3.scale.linear()
-                    .domain([0, 10])
+                    .domain([0, 20])
                     .range([height - margin, margin]);
 
     var data =  // <-C aqui sustitui a lña "x de los datos por m,
 
             [         // para que veas que no hay pedo en el
                 {m: 0, y: 5},{m: 1, y: 10},{m: 2, y: 7},
-                {m: 3, y: 5},{m: 4, y: 3},{m:5,y:9},{m: 6, y: 4},
+                {m: 3, y: 5},{m: 4, y: 19},{m:5,y:9},{m: 6, y: 4},
                 {m: 7, y: 2},{m: 8, y: 3},{m: 9, y: 2}
             ]
     var svg = d3.select("body").append("svg");
@@ -44,6 +44,7 @@
      */
     render();
     renderDots(svg);
+    ponerTexto();
     renderAxes(svg);
 
 
@@ -78,6 +79,11 @@
                 .attr("d", function(d){return area(d);}); // <-H
     }
 
+    function ponerTexto(){
+
+
+    }
+
     function renderDots(svg){
         svg.append("g").selectAll("circle")
                 .data(data)
@@ -86,6 +92,7 @@
                 .attr("cx", function(d) { return x(d.m); })
                 .attr("cy", function(d) { return y(d.y); })
                 .attr("r", 4.5);
+
     }
 
     function renderAxes(svg){
